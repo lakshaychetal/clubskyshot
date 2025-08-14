@@ -41,6 +41,18 @@ export default function Hero() {
           <a href={site.bookingUrl} className="btn-primary">Book Slot</a>
           <a href="#about" className="btn-ghost">Explore</a>
         </div>
+        {/* Side-by-side preview of other images (hidden on small screens) */}
+        <div className="mt-10 hidden sm:flex items-center justify-center gap-3">
+          {galleryImages.slice(1, 5).map((src) => (
+            <img
+              key={src}
+              src={asset(src)}
+              alt="Club Skyshot preview"
+              className="h-20 w-28 rounded-lg object-cover ring-1 ring-white/10 opacity-90 hover:opacity-100 transition"
+              loading="lazy"
+            />
+          ))}
+        </div>
       </div>
     </section>
   )
