@@ -13,7 +13,7 @@ export default function Contact() {
             <div className="mt-6 space-y-3 text-cream-300/90">
               <div><span className="font-medium text-cream-100">Phone:</span> <a className="hover:text-white" href={`tel:${site.phone.replace(/\s/g, '')}`}>{site.phone}</a></div>
               <div><span className="font-medium text-cream-100">Email:</span> <a className="hover:text-white" href={`mailto:${site.email}`}>{site.email}</a></div>
-              <div><span className="font-medium text-cream-100">Instagram:</span> <a className="hover:text-white" href={site.instagram} target="_blank" rel="noreferrer">@yourclub</a></div>
+              <div><span className="font-medium text-cream-100">Instagram:</span> <a className="hover:text-white" href={site.instagram} target="_blank" rel="noreferrer">@club.skyshot</a></div>
             </div>
           </div>
           <form className="space-y-4" onSubmit={(e) => e.preventDefault()}>

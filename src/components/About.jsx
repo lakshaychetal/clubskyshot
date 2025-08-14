@@ -28,7 +28,7 @@ export default function About() {
         <div>
           <p className="section-eyebrow">Welcome</p>
           <h2 ref={titleRef} className="section-title font-display transition-transform duration-300 will-change-transform">Premium pickleball in an elegant setting</h2>
-            <p className="mt-4 text-cream-300/90">Book your next pickleball session at Club Skyshot's top‑notch facility through the TIDA Sports app. Rackets and balls are available on‑site, and after your game, unwind with a visit to our cozy café.</p>
+            <p className="mt-4 text-cream-300/90">First pickleball club in Tricity with asphalt‑base European courts • The most luxurious and biggest club in the region. Rackets and balls are available on‑site, and after your game, unwind at our cozy café.</p>
           <div className="mt-6 flex gap-3">
             <a href="#amenities" className="btn-ghost">See amenities</a>
             <a href="#contact" className="btn-primary">Contact us</a>
