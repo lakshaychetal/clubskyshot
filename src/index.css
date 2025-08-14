@@ -15,7 +15,7 @@ html { scroll-behavior: smooth; }
 }
 
 body {
-  @apply antialiased bg-brand-950 text-cream-100;
+  @apply antialiased bg-brand-900 text-cream-100;
   background-image: theme('backgroundImage.grid-dark');
   background-size: theme('backgroundSize.grid-16');
 }

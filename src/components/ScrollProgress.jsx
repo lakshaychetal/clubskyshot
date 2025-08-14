@@ -21,7 +21,7 @@ export default function ScrollProgress() {
   }, [])
 
   return (
-    <div className="fixed top-0 left-0 right-0 z-[60] pointer-events-none">
+    <div className="fixed top-0 left-0 right-0 z-[60] pointer-events-none hidden sm:block">
       <div className="h-0.5 w-full bg-transparent">
         <div
           className="h-full bg-gradient-to-r from-gold-400 via-gold-500 to-gold-600 shadow-[0_0_12px_rgba(202,160,34,0.6)] transition-[width] duration-150 ease-out"

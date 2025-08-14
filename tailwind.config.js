@@ -62,8 +62,8 @@ export default {
         soft: '0 10px 30px rgba(16, 83, 60, 0.15)'
       },
       backgroundImage: {
-  'grid-light': "radial-gradient(rgba(16,61,46,0.08) 1.1px, transparent 1.1px)",
-  'grid-dark': "radial-gradient(rgba(255,255,255,0.05) 1.1px, transparent 1.1px)",
+          'grid-light': "radial-gradient(rgba(16,61,46,0.10) 1.1px, transparent 1.1px)",
+          'grid-dark': "radial-gradient(rgba(255,255,255,0.08) 1.1px, transparent 1.1px)",
       },
       backgroundSize: {
         'grid-16': '16px 16px',
