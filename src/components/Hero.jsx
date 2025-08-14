@@ -38,7 +38,7 @@ export default function Hero() {
         <h1 className="mt-8 text-5xl sm:text-6xl font-display font-semibold tracking-tight text-cream-50 drop-shadow-[0_1px_0_rgba(0,0,0,0.5)]">Club Skyshot</h1>
         <p className="mt-3 text-cream-200/90 font-medium uppercase tracking-[0.18em]">The Luxury Pickle Zone</p>
         <div className="mt-8 flex items-center justify-center gap-4">
-          <a href={site.bookingUrl} className="btn-primary">Book Slot</a>
+          <a href="/book" className="btn-primary">Book Slot</a>
           <a href="#about" className="btn-ghost">Explore</a>
         </div>
       </div>

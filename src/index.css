@@ -20,6 +20,12 @@ body {
   background-size: theme('backgroundSize.grid-16');
 }
 
+/* Booking route: use a light background and remove the dark grid */
+body.booking-bg {
+  @apply bg-cream-50 text-brand-900;
+  background-image: none !important;
+}
+
 .container-gutter {
   @apply px-4 sm:px-6 lg:px-8;
 }

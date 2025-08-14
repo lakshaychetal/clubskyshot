@@ -60,7 +60,7 @@ export default function StickyBookButton() {
       aria-hidden={!visible}
     >
       <a
-        href={site.bookingUrl}
+        href="/book"
         className="block w-full flex items-center justify-center text-center font-bold tracking-tight text-lg sm:text-xl
                    rounded-none px-6 sm:px-8 py-4 sm:py-5 shadow-soft ring-1 ring-black/5
                    bg-gold-500 text-brand-900 hover:bg-gold-400 active:bg-gold-500/95
