@@ -17,7 +17,7 @@ export default function Booking() {
   const [courtId, setCourtId] = useState(COURTS[0].id)
   const [selected, setSelected] = useState(() => new Set())
   const [step, setStep] = useState(1)
-  const [activeTab, setActiveTab] = useState('book')
+  const [activeTab, setActiveTab] = useState('details')
   const [mobileSummaryOpen, setMobileSummaryOpen] = useState(false)
 
   const slots = useMemo(() => generateSlotsForDate(date), [date])
@@ -73,9 +73,8 @@ export default function Booking() {
   )
 
   const MobileBooking = () => {
-    const [view, setView] = useState('landing') // landing | book | details | summary
+    const [view, setView] = useState('details') // details | book | summary
 
-    // Helpers for day navigation
     const shiftDay = (delta) => {
       const d = new Date(date)
       d.setDate(d.getDate() + delta)
@@ -85,58 +84,52 @@ export default function Booking() {
 
     return (
       <div className="md:hidden relative min-h-screen pb-16">
-        {/* Left step rail */}
-        <div className="absolute left-0 top-0 bottom-16 w-14 bg-slate-50 border-r border-slate-200 hidden xs:block" aria-hidden>
-          <div className="h-full flex flex-col items-center justify-between py-6">
-            <StepPill label="SPORT" active={view==='landing' || view==='details'} />
-            <StepPill label="FACILITY" active={view==='details'} />
-            <StepPill label="SLOTS" active={view==='book'} />
-            <StepPill label="SUMMARY" active={view==='summary'} />
-          </div>
+        {/* Top app bar (light and readable) */}
+        <div className="sticky top-0 z-30 bg-cream-50/95 backdrop-blur border-b border-black/5 text-brand-900 px-4 py-3 flex items-center gap-3">
+          <button aria-label="Back" className="text-brand-900/80" onClick={() => (history.length > 1 ? window.history.back() : (window.location.href = '/'))}>←</button>
+          <div className="text-xl font-semibold">Book a Slot</div>
         </div>
 
-        {/* Content */}
-        <div className="pl-0 xs:pl-16">
-          {/* Top app bar */}
-          <div className="sticky top-0 z-30 bg-navy-900/95 backdrop-blur text-white px-4 py-3 flex items-center gap-3 shadow-sm">
-            <a href="/" aria-label="Back" className="text-white/80">←</a>
-            <div className="text-xl font-semibold">Book a Slot</div>
-          </div>
-
-          {/* Landing/details view */}
-          {(view==='landing' || view==='details') && (
-            <div className="p-4 space-y-4">
-              <div className="bg-white rounded-2xl border border-black/5 shadow overflow-hidden">
-                <Carousel images={[...galleryImages, ...galleryImages].slice(0, 6)} interval={5000} />
-              </div>
-              <div className="bg-white rounded-2xl border border-black/5 shadow p-4">
-          {/* Mobile: landing + slots (single day) */}
-          <div className="md:hidden space-y-4">
-            {/* Mobile header bar */}
-            <div className="sticky top-0 z-20 -mx-4 px-4 py-3 bg-cream-50/95 backdrop-blur border-b border-black/5">
-              <div className="flex items-center gap-3">
-                <button aria-label="Back" className="text-brand-900/80" onClick={() => history.length > 1 ? window.history.back() : (window.location.href = '/')}>←</button>
-                <h1 className="text-lg font-display font-semibold">Book a Slot</h1>
-              </div>
+        {/* Details landing */}
+        {view === 'details' && (
+          <div className="p-4 space-y-4">
+            <div className="bg-white rounded-2xl border border-black/5 shadow overflow-hidden">
+              <Carousel images={[...galleryImages, ...galleryImages].slice(0, 6)} interval={5000} />
             </div>
-
-            {/* Mobile header/landing card - with court first */}
-            <div className="rounded-2xl border border-black/5 bg-white shadow p-4">
-              <div>
-                <div className="text-sm font-semibold text-slate-700">Choose Court</div>
-                <div className="mt-2 flex gap-2 overflow-x-auto">
-                  {COURTS.map(c => (
-                    <button
-                      key={c.id}
-                      onClick={() => { setSelected(new Set()); setCourtId(c.id) }}
-                      className={`px-3 py-2 rounded-xl border whitespace-nowrap ${courtId===c.id ? 'bg-brand-900 text-cream-100 border-brand-900' : 'bg-white text-slate-700 border-slate-200'}`}
-                    >
-                      {c.name}
-                    </button>
-                  ))}
-                </div>
+            <div className="bg-white rounded-2xl border border-black/5 shadow p-4">
+              <div className="flex items-center gap-2">
+                <span className="text-xs px-2 py-1 rounded-full bg-emerald-50 text-emerald-700 border border-emerald-200">Exclusive</span>
               </div>
+              <h1 className="mt-2 text-2xl font-display font-semibold">{site.brandName}</h1>
+              <p className="mt-1 text-slate-600 text-sm">{site.addressLine}</p>
+            </div>
+            <div className="bg-white rounded-2xl border border-black/5 shadow p-4">
+              <h3 className="font-semibold text-slate-800">Details</h3>
+              <ul className="mt-2 text-slate-700 list-disc pl-5 space-y-1">
+                <li>3 tournament-spec courts</li>
+                <li>Coaching & social play</li>
+                <li>AC lounge and Cafe</li>
+              </ul>
+            </div>
+          </div>
+        )}
 
+        {/* Booking (single day) */}
+        {view === 'book' && (
+          <div className="p-4 space-y-4">
+            <div className="bg-white rounded-2xl border border-black/5 shadow p-4">
+              <div className="text-sm font-semibold text-slate-700">Choose Court</div>
+              <div className="mt-2 flex gap-2 overflow-x-auto">
+                {COURTS.map(c => (
+                  <button
+                    key={c.id}
+                    onClick={() => { setSelected(new Set()); setCourtId(c.id) }}
+                    className={`px-3 py-2 rounded-xl border whitespace-nowrap ${courtId===c.id ? 'bg-brand-900 text-cream-100 border-brand-900' : 'bg-white text-slate-700 border-slate-200'}`}
+                  >
+                    {c.name}
+                  </button>
+                ))}
+              </div>
               <div className="mt-4 flex items-center gap-2">
                 <input
                   type="date"
@@ -144,13 +137,11 @@ export default function Booking() {
                   onChange={(e) => { setSelected(new Set()); setDate(e.target.value) }}
                   className="flex-1 rounded-xl bg-white border border-slate-300 px-3 py-2 text-slate-700"
                 />
-                <button aria-label="Previous day" className="rounded-xl border border-slate-300 px-3 py-2" onClick={() => changeDateBy(-1)}>◀</button>
-                <button aria-label="Next day" className="rounded-xl border border-slate-300 px-3 py-2" onClick={() => changeDateBy(1)}>▶</button>
+                <button aria-label="Previous day" className="rounded-xl border border-slate-300 px-3 py-2" onClick={() => shiftDay(-1)}>◀</button>
+                <button aria-label="Next day" className="rounded-xl border border-slate-300 px-3 py-2" onClick={() => shiftDay(1)}>▶</button>
               </div>
             </div>
-
-            {/* Mobile slots grid (single day) */}
-            <div className="rounded-2xl border border-black/5 bg-white shadow p-4">
+            <div className="bg-white rounded-2xl border border-black/5 shadow p-4">
               <div className="grid grid-cols-2 gap-3">
                 {slots.map((s) => {
                   const isBooked = booked.has(s)
@@ -174,135 +165,50 @@ export default function Booking() {
                 })}
               </div>
             </div>
-
-            {/* Mobile details tab content */}
-            {activeTab === 'details' && (
-              <div className="rounded-2xl border border-black/5 bg-white shadow p-4">
-                <h2 className="font-semibold text-slate-800">Details</h2>
-                <ul className="mt-2 text-slate-700 list-disc pl-5 space-y-1">
-                  <li>3 tournament-spec courts</li>
-                  <li>Coaching & social play</li>
-                  <li>AC lounge and Cafe</li>
-                </ul>
-              </div>
-            )}
-
-            {/* Sticky selection ribbon */}
-            <div className="fixed left-0 right-0 bottom-16 z-40 md:hidden px-4">
-              <div className="mx-auto max-w-6xl rounded-2xl bg-teal-700 text-white shadow-lg flex items-center justify-between px-4 py-3">
-                <div className="font-semibold">{selected.size} {selected.size === 1 ? 'slot' : 'slots'} selected</div>
-                <button
-                  className="rounded-xl bg-white/95 text-teal-900 font-semibold px-4 py-2"
-                  onClick={() => setMobileSummaryOpen(true)}
-                  disabled={selected.size === 0}
-                >
-                  SUMMARY
-                </button>
-              </div>
-            </div>
-
-            {/* Bottom nav tabs */}
-            <nav className="fixed bottom-0 left-0 right-0 z-40 md:hidden grid grid-cols-2">
-              <button onClick={() => setActiveTab('book')} className={`py-4 font-semibold ${activeTab==='book' ? 'bg-teal-800 text-white' : 'bg-teal-700/90 text-white/90'}`}>BOOK A SLOT</button>
-              <button onClick={() => setActiveTab('details')} className={`py-4 font-semibold ${activeTab==='details' ? 'bg-teal-800 text-white' : 'bg-teal-700/90 text-white/90'}`}>DETAILS</button>
-            </nav>
           </div>
-                <div className="flex items-center gap-2">
-                  <span className="text-xs px-2 py-1 rounded-full bg-emerald-50 text-emerald-700 border border-emerald-200">Exclusive</span>
-                </div>
-                <h1 className="mt-2 text-2xl font-display font-semibold">{site.brandName}</h1>
-                <p className="mt-1 text-slate-600 text-sm">{site.addressLine}</p>
-                <div className="mt-4 border border-teal-300/70 rounded-xl p-4 text-teal-700 bg-teal-50/50 flex items-center justify-between">
-                  <div className="font-semibold">20% OFF</div>
-                  <button className="text-teal-700/80 font-medium">View</button>
-                </div>
-              </div>
-            </div>
-          )}
+        )}
 
-          {/* Book slots view (single day grid, like desktop) */}
-          {view==='book' && (
-            <div className="p-4 space-y-4">
-              <div className="bg-white rounded-2xl border border-black/5 shadow p-4">
-                <h2 className="text-xl font-semibold">Select Slots</h2>
-                <div className="mt-3 flex items-center justify-between gap-3">
-                  <input
-                    type="date"
-                    value={date}
-                    onChange={(e) => { setSelected(new Set()); setDate(e.target.value) }}
-                    className="rounded-xl bg-white border border-slate-300 px-3 py-2 text-slate-700"
-                  />
-                  <div className="flex gap-2">
-                    <button onClick={() => shiftDay(-1)} className="rounded-xl border border-slate-300 px-3 py-2">◀</button>
-                    <button onClick={() => shiftDay(1)} className="rounded-xl border border-slate-300 px-3 py-2">▶</button>
-                  </div>
-                </div>
-                <div className="mt-4 grid grid-cols-2 gap-3">
-                  {slots.map((s) => {
-                    const isBooked = booked.has(s)
-                    const isSel = selected.has(s)
-                    return (
-                      <button
-                        key={s}
-                        onClick={() => toggleSlot(s)}
-                        disabled={isBooked}
-                        className={[
-                          'px-3 py-2 rounded-lg text-sm border transition text-left',
-                          isBooked ? 'opacity-40 cursor-not-allowed bg-slate-100 border-slate-200 text-slate-500' : isSel ? 'bg-gold-500 text-brand-900 border-gold-400' : 'bg-white hover:bg-cream-50 border-slate-200 text-slate-800',
-                        ].join(' ')}
-                      >
-                        <div className="font-medium">{s}</div>
-                        {!isSel && !isBooked && <div className="text-[11px] opacity-70">{formatCurrency(PRICE_PER_SLOT)} · 1 left</div>}
-                        {isSel && <div className="text-[11px] opacity-80">Selected</div>}
-                        {isBooked && <div className="text-[11px]">Booked</div>}
-                      </button>
-                    )
-                  })}
-                </div>
+        {/* Summary */}
+        {view === 'summary' && (
+          <div className="p-4 space-y-4">
+            <div className="bg-white rounded-2xl border border-black/5 shadow p-4">
+              <h2 className="text-xl font-semibold">Summary</h2>
+              <p className="mt-1 text-slate-600">{new Date(date).toDateString()}</p>
+              <p className="mt-1 text-slate-600">Court: {COURTS.find(c => c.id === courtId)?.name}</p>
+              <div className="mt-3 text-sm">
+                <div className="font-medium text-slate-700">Selected slots</div>
+                {selected.size === 0 ? (
+                  <p className="text-slate-500">None selected</p>
+                ) : (
+                  <ul className="mt-1 list-disc pl-5 space-y-1 text-slate-700">
+                    {[...selected].sort().map(s => <li key={s}>{s} ({formatCurrency(PRICE_PER_SLOT)})</li>)}
+                  </ul>
+                )}
               </div>
-            </div>
-          )}
-
-          {/* Summary view */}
-          {view==='summary' && (
-            <div className="p-4 space-y-4">
-              <div className="bg-white rounded-2xl border border-black/5 shadow p-4">
-                <h2 className="text-xl font-semibold">Summary</h2>
-                <p className="mt-1 text-slate-600">{new Date(date).toDateString()}</p>
-                <p className="mt-1 text-slate-600">Court: {COURTS.find(c => c.id === courtId)?.name}</p>
-                <div className="mt-3 text-sm">
-                  <div className="font-medium text-slate-700">Selected slots</div>
-                  {selected.size === 0 ? (
-                    <p className="text-slate-500">None selected</p>
-                  ) : (
-                    <ul className="mt-1 list-disc pl-5 space-y-1 text-slate-700">
-                      {[...selected].sort().map(s => <li key={s}>{s} ({formatCurrency(PRICE_PER_SLOT)})</li>)}
-                    </ul>
-                  )}
-                </div>
-                <div className="mt-4 pt-4 border-t border-slate-200 flex items-center justify-between">
-                  <span className="font-semibold">Total</span>
-                  <span className="font-semibold">{formatCurrency(total)}</span>
-                </div>
-                <button className="mt-4 w-full btn-primary" onClick={() => alert('Login/Payment coming soon')}>Login / Continue</button>
+              <div className="mt-4 pt-4 border-t border-slate-200 flex items-center justify-between">
+                <span className="font-semibold">Total</span>
+                <span className="font-semibold">{formatCurrency(total)}</span>
               </div>
+              <button className="mt-4 w-full btn-primary" onClick={() => alert('Login/Payment coming soon')}>Login / Continue</button>
             </div>
-          )}
+          </div>
+        )}
 
-          {/* Bottom sticky summary/actions */}
+        {/* Bottom sticky summary only in booking view */}
+        {view === 'book' && (
           <div className="fixed bottom-16 inset-x-0 z-40 px-4">
             <div className="bg-teal-600 text-white rounded-xl shadow-md px-4 py-3 flex items-center justify-between">
-              <div className="font-semibold">{selected.size} slots selected</div>
+              <div className="font-semibold">{selected.size} {selected.size === 1 ? 'slot' : 'slots'} selected</div>
               <div className="flex items-center gap-2">
                 <div className="font-semibold hidden xs:block">{formatCurrency(total)}</div>
                 <button className="bg-white text-teal-700 rounded-lg px-3 py-2 font-semibold" onClick={() => setView('summary')}>SUMMARY</button>
               </div>
             </div>
           </div>
+        )}
 
-          {/* Bottom tab bar */}
-          <MobileBottomTabs active={view==='book' ? 'book' : 'details'} onTab={(tab)=> setView(tab)} />
-        </div>
+        {/* Bottom tab bar */}
+        <MobileBottomTabs active={view} onTab={(tab)=> setView(tab)} />
       </div>
     )
   }
